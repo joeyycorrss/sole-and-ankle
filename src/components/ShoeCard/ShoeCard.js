@@ -5,6 +5,21 @@ import { COLORS, WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
 import Spacer from '../Spacer';
 
+const FLAG_STYLES = {
+  sale: {
+    value: 'Sale',
+    '--bg-color': COLORS.primary,
+  },
+  new: {
+    value: 'Just released!',
+    '--bg-color': COLORS.secondary,
+  },
+  default: {
+    value: 'default',
+    '--display': 'none',
+  },
+}
+
 const ShoeCard = ({
   slug,
   name,
@@ -25,17 +40,20 @@ const ShoeCard = ({
   // both on-sale and new-release, but in this case, `on-sale`
   // will triumph and be the variant used.
   // prettier-ignore
-  const variant = typeof salePrice === 'number'
-    ? 'on-sale'
+  const variantStyles = typeof salePrice === 'number'
+    ? FLAG_STYLES.sale
     : isNewShoe(releaseDate)
-      ? 'new-release'
-      : 'default'
+      ? FLAG_STYLES.new
+      : FLAG_STYLES.default
 
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          <ShoeFlag style={variantStyles}>
+            {variantStyles.value}
+          </ShoeFlag>
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
@@ -61,10 +79,28 @@ const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
+
+const ShoeFlag = styled.label`
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  font-size: ${14/16}rem;
+  font-weight: ${WEIGHTS.bold};
+  color: ${COLORS.white};
+  padding: 9px 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  display: var(--display);
+  background-color: var(--bg-color);
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
