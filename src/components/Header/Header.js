@@ -27,11 +27,13 @@ const Header = () => {
 };
 
 const MainHeader = styled.div`
-  padding-block: 21px 23px;
-  padding-inline: 32px;
   border-bottom: 1px solid ${COLORS.gray[300]};
-  display: flex;
-  align-items: baseline;
+  display: flex; 
+  padding-inline: 32px;
+  ${'' /* padding-block: 21px 23px;  */}
+  ${'' /* align-items: baseline; */}
+  align-items: center; /* ^ can set padding and align baseline */ 
+  height: 72px; /* or set the height and align center */
 `;
 
 const Nav = styled.nav`
